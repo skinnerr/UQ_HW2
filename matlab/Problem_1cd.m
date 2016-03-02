@@ -41,7 +41,7 @@ hold on;
 plot(n,avgs');
 plot(n,ones(1,length(n)),'--k');
 plot(n,0.596*ones(1,length(n)),':k');
-hleg = legend({'<x_1>','<x_2>','<x_1\cdotx_2>','1','0.596'});
+hleg = legend({'<x1>','<x2>','<x1 x2>','1','0.596'});
 set(hleg,'Location','northeast');
 set(gca,'XScale','log');
 
@@ -50,10 +50,11 @@ hold on;
 truth = repmat([1,1,0.596347],N,1);
 error = abs(avgs' - truth) ./ truth;
 plot(n,error);
-hleg = legend({'RelErr[<x_1>]','RelErr[<x_2>]','RelErr[<x_1\cdotx_2>]'});
+hleg = legend({'RelErr[<x1>]','RelErr[<x2>]','RelErr[<x1 x2>]'});
 set(hleg,'Location','southwest');
 set(gca,'XScale','log');
 set(gca,'YScale','log');
+ylim([1e-7,2]);
 xlabel('Cumulative Samples');
 
 end
