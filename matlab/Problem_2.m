@@ -2,7 +2,7 @@ function [] = Problem_2()
     
     Set_Default_Plot_Properties();
     
-    realizations = 10000;
+    realizations = 100000;
     
     %%%
     % Define variables specific to the boundary-value problem.
@@ -25,40 +25,50 @@ function [] = Problem_2()
 
     % Solve for u
     u = nan(realizations, N);
-    for i = 1:realizations
-        u(i,:) = Solve_u(h, u0, uf(i), K(i,:));
+    for numb = 1:realizations
+        u(numb,:) = Solve_u(h, u0, uf(numb), K(numb,:));
     end
     
     % Plot realizations of G.
     figure();
+    subplot(3,1,1);
     plot(x, G(1:10,:));
-    
+    ylabel('G(x,\omega)');
+    xlabel('x');
     % Plot realizations of K.
-    figure();
+    subplot(3,1,2);
     plot(x, K(1:10,:));
-    
+    ylabel('K(x,\omega)');
+    xlabel('x');
     % Plot realizations of u.
-    figure();
+    subplot(3,1,3);
     plot(x, u(1:10,:));
+    ylabel('u');
+    xlabel('x');
     
     % Plot statistics of u.
     figure();
-%     n = [10, 30, 100, 300, 1000, 3000, 10000, 30000, 100000];
-    n = [10, 30, 100, 300, 1000, 3000, 10000];
+    n = [100, 300, 1000, 3000, 10000, 30000, 100000];
+%     n = [10, 30, 100, 300, 1000, 3000, 10000];
 %     n = [10, 30, 100, 300, 1000];
 %     n = [10, 30];
-    for i = n
-        if i == n(end)
+    rgb = flip(copper(length(n)));
+    index = 0;
+    for numb = n
+        index = index + 1;
+        if index == length(n)
             size = 3;
         else
             size = 1.5;
         end
         subplot(2,1,1);
         hold on;
-        plot(x, mean(u(1:i,:)), 'DisplayName', sprintf('n = %i', i), 'LineWidth', size);
+        plot(x, mean(u(1:numb,:)), 'DisplayName', sprintf('n = %i', numb), ...
+                                   'LineWidth', size, 'Color', rgb(index,:));
         subplot(2,1,2);
         hold on;
-        plot(x,  var(u(1:i,:)), 'Displayname', sprintf('n = %i', i), 'LineWidth', size);
+        plot(x,  var(u(1:numb,:)), 'Displayname', sprintf('n = %i', numb), ...
+                                   'LineWidth', size, 'Color', rgb(index,:));
     end
     subplot(2,1,1);
     xlabel('x');
@@ -72,24 +82,31 @@ function [] = Problem_2()
     set(hleg2, 'Location', 'eastoutside');
     
     % Calculate probability of excessive max temperature.
-    n = 1:realizations;
+    n = 100:10000;
     prob = nan(1,length(n));
-    for i = 1:length(n)
-        umax = max(u(1:n(i),:),[],2);
+    for numb = 1:length(n)
+        umax = max(u(1:n(numb),:),[],2);
         m = mean(umax);
         v = var(umax);
         hits = sum( umax > ( m + 3*sqrt(v) ) );
-        prob(i) = hits / n(i);
+        prob(numb) = hits / n(numb);
     end
     figure();
     hold on;
     plot(n, prob);
-    plot([1,realizations], prob(end)*[1,1], '--');
+    plot([n(1),n(end)], prob(end)*[1,1], '--');
+    set(gca, 'XScale', 'log');
     xlabel('Cumulative Realizations');
     ylabel('Probability');
-    fprintf('Probability of excessive temperature: %.4e\n', prob(end));
+    
+    umax = max(u,[],2);
+    m = mean(umax);
+    v = var(umax);
+    hits = sum( umax > ( m + 3*sqrt(v) ) );
+    prob = hits / realizations;
     fprintf('  E(umax) = %.4e\n', m);
     fprintf('Var(umax) = %.4e\n', v);
+    fprintf('Probability of excessive temperature: %.4e\n', prob);
     
 end
 

@@ -13,8 +13,6 @@
   \mathrel{\overset{#2}{\scalebox{#1}[1]{$\sim$}}}
 }
 
-\renewcommand*{\arraystretch}{1.5}
-
 \pagestyle{fancyplain}
 \lhead{}
 \chead{}
@@ -106,7 +104,73 @@ This problem concerns a derivation from scratch of the Bayesian MAP estimate of 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Bloop!
+The thermal coefficient $K$ of a 1D slab is characterized by a lognormal random process
+\begin{equation*}
+K(x,\omega) = \exp(G(x,\omega)), \qquad x \in (0,1),
+\end{equation*}
+where $G(x, \omega)$ is a Gaussian random process defined on $(0, 1)$. The mean and covariance functions of the Gaussian process $G(x, \omega)$ are
+\begin{equation*}
+\xpect{G(x)} = 1.0, \qquad x \in (0,1),
+\end{equation*}
+and
+\begin{equation*}
+C_{GG}(x_1,x_2) = \sigma^2 \exp \left( \frac{- | x_1-x_2 | }{\ell} \right), \qquad (x1,x2) \in (0,1) \times (0,1),
+\end{equation*}
+respectively. We would like to compute the statistics of the temperature field $u(x)$ by solving the governing steady-sate stochastic heat equation
+\begin{align}
+\pp{}{x} \left( K(x,\omega) \pp{u(x,\omega)}{x} \right) &= 1.0, \qquad x \in (0,1), \\
+u(0,\omega) &= 0, \\
+u(1,\omega) &= \theta(\omega),
+\label{eq:pde}
+\end{align}
+where $\theta(\omega) \sim N(0,0.1)$ characterizes the uncertainty in the right boundary condition and is statistically independent from $K(x,\omega)$. Set $\sigma=2$ and $\ell=0.2$, and use the codes form Homework 1 to generate samples of $G_d(x,\omega)$ when only $d=10$ terms in the KL expansion of $G(x,\omega)$ are used.
+
+We write a standard second-order central-difference implicit code to solve the PDE in \eqref{eq:pde} for fixed $\omega$, meaning that $K(x,\omega) \rightarrow K(x)$ and $\theta(\omega) \rightarrow \theta$. Next, we compute the mean $\xpect{u(x)}$ and variance $\var(u(x))$ of the solution using a Monte Carlo simulation, and verify that these statistics converge as the number of samples is increased. Finally, letting $u_\tmax = \max_x u(x)$, we compute the probability that the maximum temperature on the slab exceeds a certain threshold,
+\begin{equation}
+P \left( u_\tmax > \xpect{u_\tmax} + 3 \cdot \sqrt{\var(u_\tmax)} \right)
+.
+\label{eq:probability}
+\end{equation}
+
+Using the analytical eigensystem solution for the Karhunen-Loeve expansion, realizations of $G$, $K$, and $u$ are shown in \figref{fig:prob3a}. As the number of realizations $n$ is increased from 1 to $N=100,\!000$, the mean and variance converge to the functions presented in \figref{fig:prob3b}. Both boundary conditions are satisfied, since $u(0)=0$ is fixed and  $u(1) = \theta(\omega) \sim N(0,0.1)$ matches in both mean and variance plots. Finally, we see the probability converge to a value near 0.015 in \figref{fig:prob3c}. Though not shown in this figure, the final statistics pertaining to $u_\tmax$ obtained from 100,000 realizations are shown in Table \ref{tbl:probabilities}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+Quantity & Value \\
+\midrule
+$\xpect{u_\tmax}$ & 0.12571 \\
+$\var(u_\tmax)$ & 0.03383 \\
+$P(\cdot)$ & 1.553 \% \\
+\bottomrule
+\end{tabular}
+\vspace{1em}
+\caption{Relevant quantities in \eqref{eq:probability} computed from 100,000 realizations.}
+\label{tbl:probabilities}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.84\textwidth, trim={1cm 0 1cm 0}]{Prob3_a.eps}
+\caption{Ten realizations of $G$, $K$, and $u$.}
+\label{fig:prob3a}
+\end{figure}
+
+\begin{figure}[b]
+\centering
+\includegraphics[width=0.9\textwidth, trim={1cm 0 1cm 0}]{Prob3_b.eps}
+\caption{Convergence of the mean and variance of $u(x)$ as the number $n$ of realizations is increased.}
+\label{fig:prob3b}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\textwidth, trim={1cm 0 1cm 0}]{Prob3_c.eps}
+\vspace{1em}
+\caption{Convergence in the probability \eqref{eq:probability} as more realizations are generated. Final statistics use $10^5$ realizations, but only up to $10^4$ are shown here.}
+\label{fig:prob3c}
+\end{figure}
 
 %%
 %% DOCUMENT END
