@@ -7,8 +7,8 @@ ell = 0.2;
 a = 1/2;
 b = 10;
 
-x = linspace(0,2*a,Nx);
-[lh, phih] = Galerkin_Eigs(sigma, ell, b, x);
+x = linspace(-a,a,Nx);
+[lh, phih] = Analytical_Eigs(sigma, ell, a, b, x);
 
 X = ones(realizations,Nx); % Initialize to one because <G(x)> = 1.0;
 for r = 1:realizations
