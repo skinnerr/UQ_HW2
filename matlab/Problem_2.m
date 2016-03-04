@@ -2,7 +2,7 @@ function [] = Problem_2()
     
     Set_Default_Plot_Properties();
     
-    realizations = 1000;
+    realizations = 10000;
     
     %%%
     % Define variables specific to the boundary-value problem.
@@ -29,15 +29,14 @@ function [] = Problem_2()
         u(i,:) = Solve_u(h, u0, uf(i), K(i,:));
     end
     
-%     % Plot realizations of G.
-%     figure();
-%     plot(x, G(1:10,:));
-%     mean(mean(G))
-%     
-%     % Plot realizations of K.
-%     figure();
-%     plot(x, K(1:10,:));
-%     
+    % Plot realizations of G.
+    figure();
+    plot(x, G(1:10,:));
+    
+    % Plot realizations of K.
+    figure();
+    plot(x, K(1:10,:));
+    
     % Plot realizations of u.
     figure();
     plot(x, u(1:10,:));
@@ -45,7 +44,8 @@ function [] = Problem_2()
     % Plot statistics of u.
     figure();
 %     n = [10, 30, 100, 300, 1000, 3000, 10000, 30000, 100000];
-    n = [10, 30, 100, 300, 1000];
+    n = [10, 30, 100, 300, 1000, 3000, 10000];
+%     n = [10, 30, 100, 300, 1000];
 %     n = [10, 30];
     for i = n
         if i == n(end)
@@ -88,6 +88,8 @@ function [] = Problem_2()
     xlabel('Cumulative Realizations');
     ylabel('Probability');
     fprintf('Probability of excessive temperature: %.4e\n', prob(end));
+    fprintf('  E(umax) = %.4e\n', m);
+    fprintf('Var(umax) = %.4e\n', v);
     
 end
 
