@@ -132,7 +132,7 @@ P \left( u_\tmax > \xpect{u_\tmax} + 3 \cdot \sqrt{\var(u_\tmax)} \right)
 \label{eq:probability}
 \end{equation}
 
-Using the analytical eigensystem solution for the Karhunen-Loeve expansion, realizations of $G$, $K$, and $u$ are shown in \figref{fig:prob3a}. As the number of realizations $n$ is increased from 1 to $N=100,\!000$, the mean and variance converge to the functions presented in \figref{fig:prob3b}. Both boundary conditions are satisfied, since $u(0)=0$ is fixed and  $u(1) = \theta(\omega) \sim N(0,0.1)$ matches in both mean and variance plots. Finally, we see the probability converge to a value near 0.015 in \figref{fig:prob3c}. Though not shown in this figure, the final statistics pertaining to $u_\tmax$ obtained from 100,000 realizations are shown in Table \ref{tbl:probabilities}.
+Using the analytical eigensystem solution for the Karhunen-Loeve expansion, realizations of $G$, $K$, and $u$ are shown in \figref{fig:prob3a}. A spatial discretization is chosen that uses 1001 uniformly-spaced nodes on the interval $[0,1]$. As the number of realizations $n$ is increased from 1 to $N=100,\!000$, the mean and variance converge to the functions presented in \figref{fig:prob3b}. Both boundary conditions are satisfied, since $u(0)=0$ is fixed and  $u(1) = \theta(\omega) \sim N(0,0.1)$ matches in both mean and variance plots. Finally, we see the probability converge to a value near 0.016 in \figref{fig:prob3c}. Though not shown in this figure, the final statistics pertaining to $u_\tmax$ obtained from 250,000 realizations are shown in Table \ref{tbl:probabilities}.
 
 \begin{table}[h]
 \centering
@@ -140,13 +140,13 @@ Using the analytical eigensystem solution for the Karhunen-Loeve expansion, real
 \toprule
 Quantity & Value \\
 \midrule
-$\xpect{u_\tmax}$ & 0.12571 \\
-$\var(u_\tmax)$ & 0.03383 \\
-$P(\cdot)$ & 1.553 \% \\
+$\xpect{u_\tmax}$ & 0.12568 \\
+$\var(u_\tmax)$ & 0.03379 \\
+$P(\cdot)$ & 1.59 \% \\
 \bottomrule
 \end{tabular}
 \vspace{1em}
-\caption{Relevant quantities in \eqref{eq:probability} computed from 100,000 realizations.}
+\caption{Relevant quantities in \eqref{eq:probability} computed from 250,000 realizations using 1,001 grid points.}
 \label{tbl:probabilities}
 \end{table}
 
@@ -168,7 +168,7 @@ $P(\cdot)$ & 1.553 \% \\
 \centering
 \includegraphics[width=0.9\textwidth, trim={1cm 0 1cm 0}]{Prob3_c.eps}
 \vspace{1em}
-\caption{Convergence in the probability \eqref{eq:probability} as more realizations are generated. Final statistics use $10^5$ realizations, but only up to $10^4$ are shown here.}
+\caption{Convergence in the probability \eqref{eq:probability} as more realizations are generated. Final statistics use $2.5\times 10^5$ realizations, but only up to $10^4$ are shown here.}
 \label{fig:prob3c}
 \end{figure}
 
